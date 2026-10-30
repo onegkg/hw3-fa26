@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import random
 import string
+import unicodedata
 
 # ---------------------------------------------------------------------------
 # Provided generators: naive but functional
@@ -55,8 +56,16 @@ def diacritic_word(rng: random.Random) -> str:
     The goal is to generate inputs that will stress the diacritic-folding
     behavior of the normalizer.
     """
-    # Placeholder: returns a plain word. Replace with a real implementation.
-    return random_word(rng)
+
+    diacritic_letters = ["é", "è", "ê", "ë", "à", "â", "î", "ï", "ô", "ù", "û", "ü", "ç", "ñ"]
+
+    length = rng.randint(0, 10)
+    sb = []
+    for _ in range(length):
+        word = random_word(rng)
+        rand_letter = diacritic_letters[random.randint(0, len(diacritic_letters) - 1)]
+        sb.append(unicodedata.normalize("NFC", word + rand_letter))
+    return " ".join(sb)
 
 
 def hyphenated_phrase(rng: random.Random) -> str:
@@ -69,6 +78,8 @@ def hyphenated_phrase(rng: random.Random) -> str:
 
     The goal is to generate inputs that stress hyphen-handling in the normalizer.
     """
-    # Placeholder: returns a plain word. Replace with a real implementation.
-    return random_word(rng)
-
+    length = rng.randint(0, 10)
+    sb = []
+    for _ in range(length):
+        sb.append(random_word(rng))
+    return "-".join(sb)

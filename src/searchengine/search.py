@@ -28,9 +28,7 @@ class SearchEngine:
     """
 
     def __init__(self, documents: list[Document]) -> None:
-        self._documents: dict[str, Document] = {
-            doc.doc_id: doc for doc in documents
-        }
+        self._documents: dict[str, Document] = {doc.doc_id: doc for doc in documents}
         self._index = InvertedIndex()
         for doc in documents:
             self._index.add_document(doc.doc_id, doc.content)
@@ -58,7 +56,7 @@ class SearchEngine:
                 SearchResult(
                     doc_id=doc_id,
                     title=doc.title,
-                    score=1.0,
+                    score=1.0,  # what is score doing if it can only ever be one?
                     snippet=self._make_snippet(doc.content),
                 )
             )

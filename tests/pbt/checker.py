@@ -18,7 +18,7 @@ from typing import Any, TypeVar
 T = TypeVar("T")
 
 # Type aliases for readability.
-Property = Callable[[T], bool]        # input -> True (pass) or False (fail)
+Property = Callable[[T], bool]  # input -> True (pass) or False (fail)
 Generator = Callable[[random.Random], T]  # rng -> generated input
 
 
@@ -82,6 +82,16 @@ def check_property(
     #         - If it returns False → return (False, inp)
     #         - If it raises any exception → return (False, inp)
     #   3. If all trials pass → return (True, None)
-    raise NotImplementedError(
-        "Implement check_property in tests/pbt/checker.py (Task 3)"
-    )
+    rng = random.Random()
+    if seed:
+        rng.seed(seed)
+
+    for _ in range(trials):
+        input = generator(rng)
+        try:
+            result = prop(input)
+            if not result:
+                return (False, input)
+        except:
+            return (False, input)
+    return (True, None)

@@ -12,8 +12,14 @@ Task 6: When check_property finds a failure, manually minimize the counterexampl
 
 from __future__ import annotations
 
+import unicodedata
+
+from searchengine.normalize import normalize_document
+
 from .checker import check_property
 from .generators import (
+    diacritic_word,
+    hyphenated_phrase,
     random_printable,
     random_sentence,
     random_word,
@@ -33,6 +39,29 @@ from .properties import (
 # and a generator of your choice. Which generator is most likely to find
 # a failure for each property?
 # ---------------------------------------------------------------------------
+
+
+def prop_no_diacritics_document(input: str) -> bool:
+    """
+    Tests whether there are any diacritics in the string
+    """
+
+    toks = normalize_document(input)
+    norm_toks = [unicodedata.normalize("NFD", tok) for tok in toks]
+    # if any character is a combining mark (`Mn`), return false
+    return not any(unicodedata.category(char) == "Mn" for char in "".join(norm_toks))
+
+
+class TestNoDiacritics:
+    def test_no_diacritics_document_random_sentences(self) -> None:
+        """Even on random sentences"""
+        passed, counterexample = check_property(
+            prop_no_diacritics_document,
+            diacritic_word,
+            trials=200,
+            seed=42,
+        )
+        assert passed, f"Diacritics found in normalized text for: {counterexample!r}"
 
 
 # ---------------------------------------------------------------------------
@@ -63,9 +92,6 @@ class TestNoEmptyTokens:
         )
         assert passed, f"Empty token found for input: {counterexample!r}"
 
-    # TODO (Task 5): After implementing hyphenated_phrase, add a test here
-    # that uses it. Does it find a failure the printable generator missed?
-
 
 class TestQueryDocumentConsistency:
     def test_consistency_random_words(self) -> None:
@@ -85,7 +111,29 @@ class TestQueryDocumentConsistency:
     # TODO (Task 5): Add a test using diacritic_word as the generator, and one
     # using hyphenated_phrase. Each should find a failure on the starter code.
 
+    def test_consistency_diacritic_words(self) -> None:
+        """
+        Query and document normalization agree on random words containing diacritics
+        """
+        passed, counterexample = check_property(
+            prop_query_document_consistent,
+            diacritic_word,
+            trials=200,
+            seed=120,
+        )
+        assert passed, f"Normalization mismatch for: {counterexample!r}"
 
+    # TODO (Task 5): After implementing hyphenated_phrase, add a test here
+    # that uses it. Does it find a failure the printable generator missed?
+    def test_consistency_hyphenated_phrase(self) -> None:
+        """No empty tokens from random hyphenated phrases"""
+        passed, counterexample = check_property(
+            prop_query_document_consistent,
+            hyphenated_phrase,
+            trials=200,
+            seed=45,
+        )
+        assert passed, f"Normaliation mismatch found with input: {counterexample!r}"
 
 
 # ---------------------------------------------------------------------------
@@ -106,3 +154,41 @@ class TestQueryDocumentConsistency:
 # - Named clearly so future readers understand what bug it guards against
 # - Accompanied by a docstring explaining how the failure was discovered
 # - Standalone (does not call check_property; uses the specific failing input)
+
+
+def test_regression_diacritics_consistency() -> None:
+    """
+    Regression: Diacritics produce inconsistent results when passed to normalize query vs normalize document
+
+    Original Failure: `iopqijt̗a jnskhgd̪m kskuifr͒z ihjdnzyeirt̂h razrygqwz̆u w͐v hbi̡f vňj hypnmri̸q xvocmabwx̅y`
+    Minimized Failure: `z̆`
+
+    Reason: Presence of any diacritic is enough to fail
+
+    Original failure found by diacritic word with seed=120 and trials=200
+    """
+    minimized_input = "î"
+    assert prop_query_document_consistent(minimized_input), f"Regression: {minimized_input}"
+
+    failing_input = (
+        "iopqijt̗a jnskhgd̪m kskuifr͒z ihjdnzyeirt̂h razrygqwz̆u w͐v hbi̡f vňj hypnmri̸q xvocmabwx̅y"
+    )
+    assert prop_query_document_consistent(failing_input), f"Regression: {failing_input}"
+
+
+def test_regression_hyphenation_consistency() -> None:
+    """
+    Regression: Hyphenated works produce inconsistent results when passed to normalize query vs normalize document
+
+    Original Failure: `picjkac-adjzdjxu-t-ei`
+    Minimized Failure: `i-i`
+
+    Reason: Presence of any hyphen is enough to fail
+
+    Original failure found by hyphenated word with seed=45 trials=200
+    """
+    minimized_input = "i-i"
+    assert prop_query_document_consistent(minimized_input), f"Regression: {minimized_input}"
+
+    failing_input = "picjkac-adjzdjxu-t-ei"
+    assert prop_query_document_consistent(failing_input), f"Regression: {failing_input}"

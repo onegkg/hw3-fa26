@@ -42,31 +42,39 @@ def normalize_document(text: str) -> list[str]:
     Steps:
         1. Lowercase
         2. Fold diacritics  (naïve -> naive, résumé -> resume)
-        3. Replace hyphens with spaces  (co-op -> "co op")
-        4. Strip remaining punctuation
-        5. Split on whitespace
-        6. Filter empty strings and stopwords
+        3. Remove +
+        4. Replace hyphens with spaces  (co-op -> "co op")
+        5. Strip remaining punctuation
+        6. Split on whitespace
+        7. Filter empty strings and stopwords
     """
     text = text.lower()
     text = fold_diacritics(text)
+    text = text.replace("+", "")
     text = text.replace("-", " ")
     text = re.sub(r"[^\w\s]", "", text)
+
     tokens = text.split()
     return [t for t in tokens if t and t not in STOPWORDS]
 
 
+# TODO: Add Fold diacritics between 1 and 2
 def normalize_query(text: str) -> list[str]:
     """Normalize a query string and return a list of search tokens.
 
     Steps:
         1. Lowercase
-        2. Handle hyphens
-        3. Strip remaining punctuation
-        4. Split on whitespace
-        5. Filter empty strings and stopwords
+        2. Fold diacritics (naïve -> naive, résumé -> resume)
+        3. Remove +
+        4. Handle hyphens
+        5. Strip remaining punctuation
+        6. Split on whitespace
+        7. Filter empty strings and stopwords
     """
     text = text.lower()
-    text = text.replace("-", "")
+    text = fold_diacritics(text)
+    text = text.replace("+", "")
+    text = text.replace("-", " ")
     text = re.sub(r"[^\w\s]", "", text)
     tokens = text.split()
     return [t for t in tokens if t and t not in STOPWORDS]

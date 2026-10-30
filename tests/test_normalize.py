@@ -59,11 +59,21 @@ class TestNormalizeDocument:
         result = normalize_document("hello   world")
         assert "" not in result
 
-    # TODO (Task 2): Add tests for:
-    # - Diacritics in documents (e.g., "naïve", "résumé")
-    # - Hyphenated words (e.g., "co-op" → how many tokens? what are they?)
-    # - The token "C++" (what does normalization produce?)
-    # - "node.js" (what does normalization produce?)
+    def test_diacritics(self) -> None:
+        result = normalize_document("naïve")
+        assert result == ["naive"]
+
+    def test_hyphenation(self) -> None:
+        result = normalize_document("co-op")
+        assert result == ["co", "op"]
+
+    def test_cpp(self) -> None:
+        result = normalize_document("C++")
+        assert result == ["c++"]
+
+    def test_node_js(self) -> None:
+        result = normalize_document("node.js")
+        assert result == ["nodejs"]
 
 
 # ---------------------------------------------------------------------------
@@ -86,9 +96,13 @@ class TestNormalizeQuery:
         result = normalize_query("hello   world")
         assert "" not in result
 
-    # TODO (Task 2): Add tests for:
-    # - Diacritics in queries (compare with normalize_document!)
-    # - Hyphenated words (compare with normalize_document!)
+    def test_diacritics(self) -> None:
+        result = normalize_query("naïve")
+        assert result == ["naive"]
+
+    def test_hyphenation(self) -> None:
+        result = normalize_query("co-op")
+        assert result == ["co", "op"]
 
 
 # ---------------------------------------------------------------------------
@@ -125,3 +139,15 @@ class TestNormalizationConsistency:
 
     # TODO (Task 2): Add at least two more consistency tests with inputs
     # that are likely to surface disagreements between the two normalizers.
+
+    def test_cpp_consistency(self) -> None:
+        """
+        C++ should normalize the same way in both places
+        """
+        assert normalize_query("C++") == normalize_document("C++")
+
+    def test_node_js_consistency(self) -> None:
+        """
+        node.js should normalize the same way in both places
+        """
+        assert normalize_query("node.js") == normalize_document("node.js")

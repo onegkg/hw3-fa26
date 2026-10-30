@@ -44,4 +44,5 @@ def prop_query_document_consistent(text: str) -> bool:
     Note: this property FAILS on the starter code. That is intentional:
     finding this failure is part of the assignment.
     """
+    print(f"query: {normalize_query(text)}, document: {normalize_document(text)}")
     return normalize_query(text) == normalize_document(text)

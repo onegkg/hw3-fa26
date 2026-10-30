@@ -23,7 +23,8 @@
             pkgs.uv
             pkgs.ruff
             pkgs.ty
-            pkgs.python315
+            pkgs.python311
+            pkgs.mutmut
           ];
         };
       }
