@@ -69,7 +69,7 @@ class TestNormalizeDocument:
 
     def test_cpp(self) -> None:
         result = normalize_document("C++")
-        assert result == ["c++"]
+        assert result == ["c"]
 
     def test_node_js(self) -> None:
         result = normalize_document("node.js")

@@ -50,6 +50,7 @@ def normalize_document(text: str) -> list[str]:
     """
     text = text.lower()
     text = fold_diacritics(text)
+    text = text.lower()
     text = text.replace("+", "")
     text = text.replace("-", " ")
     text = re.sub(r"[^\w\s]", "", text)
@@ -58,13 +59,13 @@ def normalize_document(text: str) -> list[str]:
     return [t for t in tokens if t and t not in STOPWORDS]
 
 
-# TODO: Add Fold diacritics between 1 and 2
 def normalize_query(text: str) -> list[str]:
     """Normalize a query string and return a list of search tokens.
 
     Steps:
         1. Lowercase
         2. Fold diacritics (naïve -> naive, résumé -> resume)
+        3. Lowercase again to catch any uppercases produced by fold_diacritics
         3. Remove +
         4. Handle hyphens
         5. Strip remaining punctuation
@@ -73,6 +74,7 @@ def normalize_query(text: str) -> list[str]:
     """
     text = text.lower()
     text = fold_diacritics(text)
+    text = text.lower()
     text = text.replace("+", "")
     text = text.replace("-", " ")
     text = re.sub(r"[^\w\s]", "", text)

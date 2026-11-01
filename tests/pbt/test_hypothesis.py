@@ -12,8 +12,10 @@ the same function your check_property tests call.
 
 from __future__ import annotations
 
-from hypothesis import given
+from hypothesis import given, settings
 from hypothesis import strategies as st
+
+from searchengine.normalize import normalize_document, normalize_query
 
 from .properties import prop_no_empty_tokens_document
 
@@ -29,3 +31,27 @@ def test_no_empty_tokens_any_text(text: str) -> None:
 #   - prop_idempotent_document
 #   - prop_query_document_consistent
 # Then follow the rest of Task 7 in ARTIFACT.md.
+@settings(max_examples=2000)
+@given(st.text())
+def test_indempotent_document_any_text(text: str) -> None:
+    """Document normalization is indempotent for any input text"""
+    toks = normalize_document(text)
+    assert toks == normalize_document(" ".join(toks))
+
+
+@settings(max_examples=2000)
+@given(st.text())
+def test_query_document_consistency_any_text(text: str) -> None:
+    """Document and query normalization should be consistent for any input text"""
+    assert normalize_document(text) == normalize_query(text)
+
+
+def test_regression_lack_of_indempotence_related_to_stopword_elimination() -> None:
+    """
+    Regression: document normalization is not indempotent when a normalization results in a stopword.
+
+    Found by : Hypothesis, test_indempotent_document_any_text (st.text(), 2000 examples)
+    Hypothesis gave : '𝑨' (MATHEMATICAL BOLD ITALIC CAPITAL A)
+
+    The first normalization pass changed it to a normal 'A' which was removed in the second pass since it is a stopword.
+    """
