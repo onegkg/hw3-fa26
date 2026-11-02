@@ -55,3 +55,4 @@ def test_regression_lack_of_indempotence_related_to_stopword_elimination() -> No
 
     The first normalization pass changed it to a normal 'A' which was removed in the second pass since it is a stopword.
     """
+    assert normalize_document(" ".join(normalize_document("𝑨"))) == normalize_document("𝑨")

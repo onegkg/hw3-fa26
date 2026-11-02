@@ -151,3 +151,13 @@ class TestNormalizationConsistency:
         node.js should normalize the same way in both places
         """
         assert normalize_query("node.js") == normalize_document("node.js")
+
+    def test_non_round_trippable_consistency(self) -> None:
+        """
+        Characters that don't round trip lower->upper->lower should be handled consistently by the normalizers
+        Kills mutant: searchengine.normalize.x_normalize_query__mutmut_2
+        Kills mutant: searchengine.normalize.x_normalize_document__mutmut_2
+        """
+        NON_ROUND_TRIP = ["ß", "ı", "ŉ", "ǰ", "ΐ"]
+        for c in NON_ROUND_TRIP:
+            assert normalize_document(c) == normalize_query(c)

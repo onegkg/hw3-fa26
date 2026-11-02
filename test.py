@@ -1,10 +1,19 @@
-import unicodedata
-from searchengine.normalize import normalize_document
+import re
 
-s = '𝑨'
-for c in s:
-    print(repr(c), unicodedata.name(c, "(no name)"))
+from searchengine.normalize import fold_diacritics
+from searchengine.stopwords import STOPWORDS
 
-first = normalize_document(s)
-print(first)
-print(normalize_document(" ".join(first)))
+
+def normalize_document(text: str) -> list[str]:
+    text = text.upper()
+    text = fold_diacritics(text)
+    text = text.lower()
+    text = text.replace("-", " ")
+    text = re.sub(r"[^\w\s]", "", text)
+    tokens = text.split()
+    return [t for t in tokens if t and t not in STOPWORDS]
+
+
+text = "ß"
+toks = normalize_document(text)
+print(toks == normalize_document(" ".join(toks)))

@@ -13,7 +13,7 @@
     searchengine.normalize.x_fold_diacritics__mutmut_13: killed
     searchengine.normalize.x_fold_diacritics__mutmut_14: killed
     searchengine.normalize.x_normalize_document__mutmut_1: killed
-    searchengine.normalize.x_normalize_document__mutmut_2: survived
+    searchengine.normalize.x_normalize_document__mutmut_2: killed
     searchengine.normalize.x_normalize_document__mutmut_3: killed
     searchengine.normalize.x_normalize_document__mutmut_4: killed
     searchengine.normalize.x_normalize_document__mutmut_5: killed
@@ -23,7 +23,7 @@
     searchengine.normalize.x_normalize_document__mutmut_9: killed
     searchengine.normalize.x_normalize_document__mutmut_10: killed
     searchengine.normalize.x_normalize_document__mutmut_11: killed
-    searchengine.normalize.x_normalize_document__mutmut_12: survived
+    searchengine.normalize.x_normalize_document__mutmut_12: killed
     searchengine.normalize.x_normalize_document__mutmut_13: killed
     searchengine.normalize.x_normalize_document__mutmut_14: killed
     searchengine.normalize.x_normalize_document__mutmut_15: killed
@@ -37,15 +37,8 @@
     searchengine.normalize.x_normalize_document__mutmut_23: killed
     searchengine.normalize.x_normalize_document__mutmut_24: killed
     searchengine.normalize.x_normalize_document__mutmut_25: killed
-    searchengine.normalize.x_normalize_document__mutmut_26: killed
-    searchengine.normalize.x_normalize_document__mutmut_27: killed
-    searchengine.normalize.x_normalize_document__mutmut_28: killed
-    searchengine.normalize.x_normalize_document__mutmut_29: killed
-    searchengine.normalize.x_normalize_document__mutmut_30: killed
-    searchengine.normalize.x_normalize_document__mutmut_31: killed
-    searchengine.normalize.x_normalize_document__mutmut_32: killed
     searchengine.normalize.x_normalize_query__mutmut_1: killed
-    searchengine.normalize.x_normalize_query__mutmut_2: survived
+    searchengine.normalize.x_normalize_query__mutmut_2: killed
     searchengine.normalize.x_normalize_query__mutmut_3: killed
     searchengine.normalize.x_normalize_query__mutmut_4: killed
     searchengine.normalize.x_normalize_query__mutmut_5: killed
@@ -55,7 +48,7 @@
     searchengine.normalize.x_normalize_query__mutmut_9: killed
     searchengine.normalize.x_normalize_query__mutmut_10: killed
     searchengine.normalize.x_normalize_query__mutmut_11: killed
-    searchengine.normalize.x_normalize_query__mutmut_12: survived
+    searchengine.normalize.x_normalize_query__mutmut_12: killed
     searchengine.normalize.x_normalize_query__mutmut_13: killed
     searchengine.normalize.x_normalize_query__mutmut_14: killed
     searchengine.normalize.x_normalize_query__mutmut_15: killed
@@ -69,10 +62,3 @@
     searchengine.normalize.x_normalize_query__mutmut_23: killed
     searchengine.normalize.x_normalize_query__mutmut_24: killed
     searchengine.normalize.x_normalize_query__mutmut_25: killed
-    searchengine.normalize.x_normalize_query__mutmut_26: killed
-    searchengine.normalize.x_normalize_query__mutmut_27: killed
-    searchengine.normalize.x_normalize_query__mutmut_28: killed
-    searchengine.normalize.x_normalize_query__mutmut_29: killed
-    searchengine.normalize.x_normalize_query__mutmut_30: killed
-    searchengine.normalize.x_normalize_query__mutmut_31: killed
-    searchengine.normalize.x_normalize_query__mutmut_32: killed

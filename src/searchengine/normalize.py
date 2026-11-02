@@ -51,7 +51,6 @@ def normalize_document(text: str) -> list[str]:
     text = text.lower()
     text = fold_diacritics(text)
     text = text.lower()
-    text = text.replace("+", "")
     text = text.replace("-", " ")
     text = re.sub(r"[^\w\s]", "", text)
 
@@ -75,7 +74,6 @@ def normalize_query(text: str) -> list[str]:
     text = text.lower()
     text = fold_diacritics(text)
     text = text.lower()
-    text = text.replace("+", "")
     text = text.replace("-", " ")
     text = re.sub(r"[^\w\s]", "", text)
     tokens = text.split()
