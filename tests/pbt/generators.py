@@ -68,6 +68,14 @@ def diacritic_word(rng: random.Random) -> str:
     return " ".join(sb)
 
 
+def random_alnum_word(rng: random.Random) -> str:
+    """
+    Generates a random alphanumeric word between one and twelve characters
+    """
+    length = rng.randint(1, 12)
+    return "".join(rng.choice(string.ascii_lowercase + string.digits) for _ in range(length))
+
+
 def hyphenated_phrase(rng: random.Random) -> str:
     """A hyphenated compound word or phrase.
 
@@ -81,5 +89,5 @@ def hyphenated_phrase(rng: random.Random) -> str:
     length = rng.randint(0, 10)
     sb = []
     for _ in range(length):
-        sb.append(random_word(rng))
+        sb.append(random_alnum_word(rng))
     return "-".join(sb)
