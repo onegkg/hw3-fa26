@@ -25,7 +25,6 @@
             pkgs.ty
             pkgs.python311
             pkgs.mutmut
-            pkgs.hypothesis
           ];
         };
       }
